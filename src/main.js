@@ -5,6 +5,10 @@
   d.cre = d.createElement;
   d.h = d.head;
   d.b = d.body;
+  window.c = console;
+  c.l = c.log;
+  c.e = c.error;
+  c.err = c.error;
   HTMLElement.prototype.app = HTMLElement.prototype.appendChild;
   window.f = fetch;
   window.st = setTimeout;
@@ -37,14 +41,25 @@
   window.sl = function(ms){
     return new P(r => st(r, ms));
   };
-  window.use = function(url){
-    return new P(r => {
-      let scr = d.b.appNew("script");
-      scr.src = url;
-      scr.onload = function(){
-        r();
-      }
-    });
+  window.use = function(url, type){
+    if(typeof type === "undefined" || type === "script"){
+      return new P(r => {
+        let scr = d.b.appNew("script");
+        scr.src = url;
+        scr.onload = function(){
+          r();
+        }
+      });
+    } else if(type === "style"){
+      return new P(r => {
+        let scr = d.h.appNew("link");
+        scr.src = url;
+        scr.rel = "stylesheet";
+        scr.onload = function(){
+          r();
+        }
+      });
+    }
   }
   O.def(HTMLElement.prototype, "tc", {
     get: function get() {
